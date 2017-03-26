@@ -46,10 +46,13 @@ def handle_sms():
 
 @app.route('/api/<num>', methods=['GET'])
 def handle_api(num):
+  print("API get ", num)
   user = find_user(num)
+  print(user)
   if not user:
     abort(401)
   
+  print("to comms.getqueued")
   return comms.get_queued(num)
 
 # Used to receive messages via api

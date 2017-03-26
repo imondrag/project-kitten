@@ -5,7 +5,7 @@ f = open('.key.txt', "r")
 key = f.readlines()
 f.close()
 
-MSG_HELP = "Yo fam, I heard you need help, so here you have it\n/find - find random partner\n/leave - leave current chat\n/share - share your phone number with partner\n/fun - more fun commands!"
+MSG_HELP = "Valid commands:\n/find - find random partner\n/leave - leave current chat\n/share - share your phone number with partner\n/fun - more fun commands!"
 
 MSG_FUN = "Fun fun! :D\n/count - shows how popular your channel is"
 
@@ -86,6 +86,7 @@ def respond_connect(user):
   if user.sms:
     return respond(user, MSG_CONNECT_SUCCESS)
   else:
+    send(user, MSG_CONNECT_SUCCESS)
     return respond(user, API_CONNECT_SUCCESS)
 
 # Responds to the user when they are placed in a queue
@@ -93,5 +94,6 @@ def respond_queue(user):
   if user.sms:
     return respond(user, MSG_QUEUE_SUCCESS)
   else:
+    send(user, MSG_QUEUE_SUCCESS)
     return respond(user, API_QUEUE_SUCCESS)
 
