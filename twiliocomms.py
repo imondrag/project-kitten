@@ -5,12 +5,12 @@ f = open('.key.txt', "r")
 key = f.readlines()
 f.close()
 
-MSG_HELP = "You done messed up, kiddo."
+MSG_HELP = "Yo fam, I heard you need help, so here you have it\n/find - find random partner\n/leave - leave current chat\n/share - share your phone number with partner\n/fun - more fun commands!"
+
+MSG_FUN = "Fun fun! :D\n/count - shows how popular your channel is"
 
 ACCOUNT_SID = key[0][:-1]
 AUTH_TOKEN = key[1][:-1]
-print(ACCOUNT_SID)
-print(AUTH_TOKEN)
 
 client = TwilioRestClient(ACCOUNT_SID, AUTH_TOKEN)
 
@@ -62,6 +62,10 @@ def respond(user, msg):
 # Respond the help message to an invalid user input
 def respond_help(user):
   return respond(user, MSG_HELP)
+
+# Respond the fun message to an invalid user input
+def respond_fun(user):
+  return respond(user, MSG_FUN)
 
 # Responds to the user when a login was successful
 def respond_roomkey_success(user):

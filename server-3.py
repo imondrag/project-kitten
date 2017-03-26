@@ -4,22 +4,26 @@ from user_2 import User
 from channel import Channel
 app = Flask(__name__)
 
-commands = ["/find", "/leave", "/share"]
+commands = ["/find", "/leave", "/share", "/help", "/fun", "/count"]
 
 channels = {}
-channels['mhacks9'] = Channel()
+channels['mhacks9'] = Channel('mhacks9')
+channels['1337'] = Channel('1337')
+channels['null'] = Channel('null')
 
 ############################
 #### PROJECT KITTEN API ####
 ############################
 
+def print_all_request_values():
+  for key in request.values:
+    print(key, ": ", request.values.get(key))
+
 def find_user(user_num):
-  
   for channel in channels.values():
     user = next((user for user in channel.get_users() if user_num == user.get_number()), None)
     if user:
       return user
-
   return None
 
 def print_msg_num(msg, num):
@@ -40,23 +44,22 @@ def handle_sms():
   
   return handle_message(rcv_msg, rcv_number, True)
 
+@app.route('/api/<num>', methods=['GET'])
+def handle_api(num):
+  user = find_user(num)
+  if not user:
+    abort(401)
+  
+  return comms.get_queued(num)
+
 # Used to receive messages via api
-@app.route('/api', methods=['GET', 'POST'])
+@app.route('/api', methods=['POST'])
 def handle_apis():
-  if request.method == 'POST':
-    rcv_msg = request.values.get('Body')
-    rcv_number = request.values.get('From')
-    print_msg_num(rcv_msg, rcv_number);
+  rcv_msg = request.values.get('Body')
+  rcv_number = request.values.get('From')
+  print_msg_num(rcv_msg, rcv_number);
 
-    return handle_message(rcv_msg, rcv_number, False)
-
-  elif request.method == 'GET':
-    rcv_number = request.values.get("To")
-    user = find_user(rcv_number)
-    if not user:
-      abort(401)
-    
-    return comms.get_queued(rcv_number)
+  return handle_message(rcv_msg, rcv_number, False)
 
 # Used to handle an incoming sms or api message
 def handle_message(rcv_msg, rcv_number, isSMS):
@@ -64,19 +67,20 @@ def handle_message(rcv_msg, rcv_number, isSMS):
 
   if not user:  # if user not found, create new user
     print('user:',rcv_number,'not in database')
+    args = []
     if rcv_msg:
       rcv_msg = rcv_msg.strip().lower()
+      args = rcv_msg.split(' ')
 
     user = User(rcv_number, sms=isSMS)
 
-    args = rcv_msg.split(' ')
-    if args[0] == "/new" and len(args[-1]) >= 5:
+    if len(args) and args[0] == "/new" and len(args[-1]) >= 5:
       chan = args[-1]
       if chan in channels.keys():
         user.msg_self("Channel " + chan + " already exists!")
         return comms.respond_roomkey_fail(user)
 
-      channels[chan] = Channel()
+      channels[chan] = Channel(chan)
       channels[chan].add(user)
       user.msg_self("You created the channel: " + chan)
       print("creating NEW channel: ", chan)
@@ -94,7 +98,13 @@ def handle_message(rcv_msg, rcv_number, isSMS):
   if rcv_msg and rcv_msg.strip().lower() in commands:
     rcv_msg = rcv_msg.strip().lower()
 
-    if rcv_msg == "/find":
+    if rcv_msg == "/help":
+      return comms.respond_help(user)
+
+    if rcv_msg == "/fun":
+      return comms.respond_fun(user)
+
+    elif rcv_msg == "/find":
       print('command was /find!')
 
       # Disconnect from an existing chat
@@ -141,6 +151,14 @@ def handle_message(rcv_msg, rcv_number, isSMS):
 
       partner.msg_self("You have been disconnected")
       return comms.respond(user, "You have been disconnected")
+
+    elif rcv_msg == "/count":
+      if user.get_status() != "Chat":
+        user.msg_sefl("Join a channel to get its count")
+        return comms.respond(user, None)
+
+      user.msg_self(user.get_channel().get_name() + " has " + user.channel().size() + " active users!")
+      return comms.respond(user, None)
 
   # Not a command; forward the message to the partner
   if user.get_partner():
