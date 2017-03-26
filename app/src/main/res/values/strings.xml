@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Converge</string>
+    <string name="title_activity_login">Sign in</string>
+    <string name="font_main">fonts/OpenSans-Semibold.ttf</string>
+    <string name="font_title">fonts/Roboto-Medium.ttf</string>
+    <string name="font_supertitle">fonts/Roboto-Bold.ttf</string>
+
+    <string name="title_activity_homepage">Homepage</string>
+
+    <string name="title_activity_splashscreen">SplashscreenActivity</string>
+</resources>
