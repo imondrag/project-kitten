@@ -2,12 +2,16 @@ from user_2 import User
 import random
 
 class Channel:
-  def __init__(self, user_list=[]):
+  def __init__(self, name=None, user_list=[]):
+    self.name = name
     self.user_list = []
 
   # Returns the size of the channel
   def size(self):
     return len(self.user_list)
+
+  def get_name(self):
+    return self.name
 
   def get_users(self):
     return self.user_list
@@ -44,7 +48,6 @@ class Channel:
     user.connect(partner)
 
     # Message the partner
-    user.msg_self("You've been connected!")
     user.msg_partner("You've been connected!")
     
     print ('Random pair complete: ', user, partner)
