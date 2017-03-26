@@ -1,0 +1,65 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    tools:context="com.example.brian.projectkitten.LaunchscreenActivity">
+
+    <!-- The primary full-screen view. This can be replaced with whatever view
+         is needed to present your content, e.g. VideoView, SurfaceView,
+         TextureView, etc. -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingLeft="32dp"
+        android:paddingRight="32dp">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="bottom|left"
+            android:keepScreenOn="true"
+            android:paddingBottom="16dp"
+            android:text="Converge"
+            android:textColor="@color/textLight"
+            android:textSize="50sp"
+            android:textStyle="bold"></TextView>
+
+        <TextView
+            android:id="@+id/developedby"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="4dp"
+            android:layout_weight="1"
+            android:gravity="left"
+            android:keepScreenOn="true"
+            android:text="A K-BIT Project"
+            android:textColor="@color/textLight"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/button_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="32dp"
+        android:layout_marginLeft="72dp"
+        android:layout_marginRight="72dp"
+        android:layout_weight="1"
+        android:background="@drawable/back_rect"
+        android:drawable="@android:color/black"
+        android:state_pressed="true"
+        android:text="Login"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:textColor="@color/textLight"
+        android:textSize="20sp" />
+
+</FrameLayout>
